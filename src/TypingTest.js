@@ -5,7 +5,7 @@ function TypingTest() {
   const [textToType, setTextToType] = useState('');
   const [userInput, setUserInput] = useState('');
   const [coloredInput, setColoredInput] = useState([]);
-  const [time, setTime] = useState(60);
+  const [time, setTime] = useState(0);
   const [wpm, setWpm] = useState();
   const [accuracy, setAccuracy] = useState();
   const fetchRandomText = async () => {
@@ -76,10 +76,21 @@ function TypingTest() {
 
     setColoredInput(coloredCharacters);
   };
+  const handleChange = (e) => {
+    setTime(parseInt(e.target.value));
+  };
 
   return (
     <div>
       <div class="container">
+        <select onChange={handleChange}>
+          <option>select time</option>
+          <option value={60}>1 minutes</option>
+          <option value={120}>2 minutes</option>
+          <option value={180}>3 minutes</option>
+          <option value={300}>5 minutes</option>
+          <option value={600}>10 minutes</option>
+        </select>
         <main>
           <div class="typing-container">
             <p id="text-to-type">Type the text below:</p>
@@ -92,6 +103,7 @@ function TypingTest() {
               cols="40"
               value={userInput}
               onChange={handleInputChange}
+              disabled={time === 0}
               placeholder="Start typing here..."
             ></textarea>
           </div>
@@ -99,7 +111,7 @@ function TypingTest() {
             <p>Time: {time} seconds</p>
             <p>Accuracy: {accuracy || 0} %</p>
             <p id="result">
-              Words per minute: <span id="wpm">{wpm}</span>
+              Words per minute: <span id="wpm">{wpm || 0}</span>
             </p>
           </div>
         </main>
