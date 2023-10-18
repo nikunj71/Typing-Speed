@@ -37,12 +37,14 @@ function TypingTest() {
     setAccuracy(accuracyData);
   }
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-    }, 1000);
+    if (userInput) {
+      const interval = setInterval(() => {
+        setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
+      return () => clearInterval(interval);
+    }
+  }, [userInput]);
   useEffect(() => {
     if (time === 0) {
       calculateTypingAccuracy(textToType, userInput);
@@ -77,16 +79,35 @@ function TypingTest() {
 
   return (
     <div>
-      <p>{coloredInput.length ? coloredInput : textToType}</p>
-      <input
-        type="text"
-        value={userInput}
-        onChange={handleInputChange}
-        style={{ width: '100%' }}
-      />
-      <p>Time: {time} seconds</p>
-      <p>Typing Speed: {wpm} WPM</p>
-      <p>Accuracy: {accuracy} %</p>
+      <div class="container">
+        <main>
+          <div class="typing-container">
+            <p id="text-to-type">Type the text below:</p>
+            <p style={{ width: '700px' }}>
+              {coloredInput.length ? coloredInput : textToType}
+            </p>
+            <textarea
+              id="user-input"
+              rows="5"
+              cols="40"
+              value={userInput}
+              onChange={handleInputChange}
+              placeholder="Start typing here..."
+            ></textarea>
+          </div>
+          <div class="result-container">
+            <p>Time: {time} seconds</p>
+            <p>Accuracy: {accuracy || 0} %</p>
+            <p id="result">
+              Words per minute: <span id="wpm">{wpm}</span>
+            </p>
+          </div>
+        </main>
+        <footer>
+          <p>&copy; 2023 Nikunj</p>
+        </footer>
+      </div>
+      <script src="script.js"></script>
     </div>
   );
 }
